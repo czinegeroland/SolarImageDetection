@@ -1,0 +1,69 @@
+﻿{
+  "Scenario": "ObjectDetection",
+  "DataSource": {
+    "Type": "Vott",
+    "Version": 1,
+    "FilePath": "C:\\Labeld_images\\vott-json-export\\SolarPowerplant-export.json"
+  },
+  "Environment": {
+    "Type": "Azure",
+    "Version": 1,
+    "SubscriptionID": "dcd021c3-011b-4eac-a6d9-3c1a239b0d50",
+    "ResourceGroupName": "cloud-shell-storage-westeurope",
+    "WorkspaceName": "0329",
+    "ComputeName": "nvidia0329",
+    "Location": "westeurope",
+    "ExperimentName": "model0329"
+  },
+  "RunHistory": {
+    "Version": 3,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "fasterrcnn-resnet50-fpn",
+        "Score": 0.59,
+        "RuntimeInSeconds": 2460.0668012,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2",
+          "e0": {
+            "OutputColumnName": "input1",
+            "InputColumnName": "input1",
+            "ImageHeight": 600,
+            "ImageWidth": 800,
+            "CropAnchor": "Center",
+            "Resizing": "Fill"
+          },
+          "e1": {
+            "OutputColumnName": "input1",
+            "InputColumnName": "input1",
+            "ColorsToExtract": "Rgb",
+            "OrderOfExtraction": "ARGB",
+            "OutputAsFloatArray": true
+          },
+          "e2": {
+            "ModelFile": "C:\\Users\\Home-Asus\\source\\repos\\SolarPowerplantSateliteImageDetection\\SolarPowerplantSateliteImageDetection\\MLModel1.onnx",
+            "FallbackToCpu": true
+          }
+        }
+      }
+    ],
+    "Estimators": {
+      "e0": "ResizeImages",
+      "e1": "ExtractPixels",
+      "e2": "ApplyOnnxModel"
+    },
+    "Schema": "e0 * e1 * e2",
+    "MetricName": "mean_average_precision",
+    "ModelFilePath": "C:\\Users\\Home-Asus\\source\\repos\\SolarPowerplantSateliteImageDetection\\SolarPowerplantSateliteImageDetection\\MLModel1.mlnet"
+  },
+  "Type": "TrainingConfig",
+  "Version": 3,
+  "TrainingOption": {
+    "Version": 0,
+    "Type": "DefaultTrainingOption",
+    "TrainingTime": 2147483647,
+    "Seed": 0
+  }
+}
