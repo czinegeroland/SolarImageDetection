@@ -1,0 +1,2 @@
+MLModel1_ConsoleApp1/MLModel1.mlnet filter=lfs diff=lfs merge=lfs -text
+MLModel1_ConsoleApp1/MLModel1.onnx filter=lfs diff=lfs merge=lfs -text
