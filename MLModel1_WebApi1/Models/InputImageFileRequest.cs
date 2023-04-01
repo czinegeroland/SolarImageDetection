@@ -1,4 +1,4 @@
-﻿namespace MLModel1_WebApi1
+﻿namespace MLModel1_WebApi1.Models
 {
     public class InputImageFileRequest
     {
