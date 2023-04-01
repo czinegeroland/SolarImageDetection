@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Solar Powerplant Detection";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-controller="ObjectDetection" asp-action="UploadImage" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="file">Select an image:</label>
+        <input type="file" name="file" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Upload and Predict</button>
+</form>
+
+@if (ViewBag.ImageUrl != null)
+{
+        <h3>Result:</h3>
+        <img src="@ViewBag.ImageUrl" alt="Predicted image" class="img-fluid" />
+}
