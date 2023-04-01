@@ -12,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddTransient<IPredicationService, PredicationService>();
 builder.Services.AddTransient<IDrawingService, DrawingService>();
+builder.Services.AddTransient<IDrawingFancyService, DrawingFancyService>();
 
 builder.Services.AddSwaggerGen(c =>
 {

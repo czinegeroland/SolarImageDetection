@@ -1,12 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.ML;
-using Microsoft.ML.Data;
 using MLModel1_WebApi1.Services;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Drawing.Printing;
-using static MLModel1.ModelOutput;
-using Color = System.Drawing.Color;
 
 namespace MLModel1_WebApi1.Controllers
 {
@@ -16,11 +9,17 @@ namespace MLModel1_WebApi1.Controllers
     {
         private readonly IPredicationService _predicationService;
         private readonly IDrawingService _drawingService;
+        private readonly IDrawingFancyService _drawingFancyService;
 
-        public PredictionController(IPredicationService predicationService, IDrawingService drawingService)
+        public PredictionController(
+            IPredicationService predicationService, 
+            IDrawingService drawingService,
+            IDrawingFancyService drawingFancyService
+            )
         {
             _predicationService = predicationService;
             _drawingService = drawingService;
+            _drawingFancyService = drawingFancyService;
         }
 
         //[HttpPost("predict-image")]
@@ -50,6 +49,16 @@ namespace MLModel1_WebApi1.Controllers
             var imageBytes = await _drawingService.DrawRectangles(file, predicationResult.Item1.BoundingBoxes.ToList(), 0.01f, predicationResult.Item2.Width, predicationResult.Item2.Height);
           
             return File(imageBytes, "image/jpeg");
+        }
+
+        [HttpPost("predict-with-image-result-fancy")]
+        public async Task<IActionResult> PredictWithImageFancyResult(IFormFile file)
+        {
+            var predicationResult = await _predicationService.Predict(file);
+
+            var imageBytes = await _drawingFancyService.DrawRectangles(file, predicationResult.Item1.BoundingBoxes.ToList(), 0.01f, predicationResult.Item2.Width, predicationResult.Item2.Height);
+
+            return File(imageBytes, "image/png");
         }
     }
 }

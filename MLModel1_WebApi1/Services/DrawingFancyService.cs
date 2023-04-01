@@ -1,51 +1,50 @@
-﻿using System.Drawing.Imaging;
+﻿using static MLModel1.ModelOutput;
+using System.Drawing.Imaging;
 using System.Drawing;
-using static MLModel1.ModelOutput;
-using System.Runtime.Versioning;
-using Image = System.Drawing.Image;
-using RectangleF = System.Drawing.RectangleF;
-using Color = System.Drawing.Color;
+using RectangleF = SixLabors.ImageSharp.RectangleF;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SolidBrush = SixLabors.ImageSharp.Drawing.Processing.SolidBrush;
+using Pen = SixLabors.ImageSharp.Drawing.Processing.Pen;
+using SixLabors.ImageSharp.Formats.Png;
 
 namespace MLModel1_WebApi1.Services
 {
-    [SupportedOSPlatform("windows")]
-    public class DrawingService : IDrawingService
+    public class DrawingFancyService : IDrawingFancyService
     {
         public async Task<byte[]> DrawRectangles(IFormFile file, List<BoundingBox> boundingBoxes, float iouThreshold = 0.01f, float inputImageWidth = 500f, float inputImageHeight = 500f)
         {
             var inputImageStream = new MemoryStream();
             await file.CopyToAsync(inputImageStream);
-            
+
             inputImageStream.Position = 0;
-            
-            Image inputImage = Image.FromStream(inputImageStream);
+
+            using var inputImage = SixLabors.ImageSharp.Image.Load<Rgba64>(inputImageStream);
+
             Bitmap outputImage = new Bitmap(inputImage.Width, inputImage.Height, PixelFormat.Format32bppArgb);
 
             var rectangles = new List<RectangleF>();
 
-            using (Graphics graphics = Graphics.FromImage(outputImage))
+            var pen = new Pen(SixLabors.ImageSharp.Color.FromRgba(0, 255, 0, 128), 3);
+
+            foreach (var box in boundingBoxes)
             {
-                graphics.DrawImage(inputImage, 0, 0, inputImage.Width, inputImage.Height);
-
-                Pen pen = new Pen(Color.Red, 2);
-
-                foreach (var box in boundingBoxes)
-                {
-                    RectangleF rect = BoundingBoxToRectangle(box, inputImageWidth, inputImageHeight);
-                    rectangles.Add(rect);
-                }
-
-                foreach (var item in NonMaximumSuppression(rectangles, iouThreshold))
-                {
-                    graphics.DrawRectangle(pen, item);
-                }
+                RectangleF rect = BoundingBoxToRectangle(box, inputImageWidth, inputImageHeight);
+                rectangles.Add(rect);
             }
 
-            using (MemoryStream outputStream = new MemoryStream())
+            foreach (var item in NonMaximumSuppression(rectangles, iouThreshold))
             {
-                outputImage.Save(outputStream, ImageFormat.Jpeg);
-                return outputStream.ToArray();
+                inputImage.Mutate(_ => _.Draw(pen, item));
+                inputImage.Mutate(_ => _.Fill(new SolidBrush(SixLabors.ImageSharp.Color.FromRgba(0, 255, 0, 24)), item));
             }
+
+
+
+            var outputStream = new MemoryStream();
+            inputImage.Save(outputStream, new PngEncoder());
+            outputStream.Position = 0;
+           
+            return outputStream.ToArray();
         }
 
         private RectangleF BoundingBoxToRectangle(BoundingBox boundingBox, float inputImageWidth, float inputImageHeight)
