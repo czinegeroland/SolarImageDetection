@@ -41,24 +41,24 @@ namespace MLModel1_WebApi1.Controllers
         //    return Ok(result);
         //}
 
-        [HttpPost("predict-with-image-result")]
-        public async Task<IActionResult> PredictWithImageResult(IFormFile file)
-        {
-            var predicationResult = await _predicationService.Predict(file);
+        //[HttpPost("predict-with-image-result")]
+        //public async Task<IActionResult> PredictWithImageResult(IFormFile file)
+        //{
+        //    var predicationResult = await _predicationService.Predict(file);
 
-            var imageBytes = await _drawingService.DrawRectangles(file, predicationResult.Item1.BoundingBoxes.ToList(), 0.01f, predicationResult.Item2.Width, predicationResult.Item2.Height);
+        //    var imageBytes = await _drawingService.DrawRectangles(file, predicationResult.Item1.BoundingBoxes.ToList(), 0.01f, predicationResult.Item2.Width, predicationResult.Item2.Height);
           
-            return File(imageBytes, "image/jpeg");
-        }
+        //    return File(imageBytes, "image/jpeg");
+        //}
 
-        [HttpPost("predict-with-image-result-fancy")]
-        public async Task<IActionResult> PredictWithImageFancyResult(IFormFile file)
-        {
-            var predicationResult = await _predicationService.Predict(file);
+        //[HttpPost("predict-with-image-result-fancy")]
+        //public async Task<IActionResult> PredictWithImageFancyResult(IFormFile file)
+        //{
+        //    var predicationResult = await _predicationService.Predict(file);
 
-            var imageBytes = await _drawingFancyService.DrawRectangles(file, predicationResult.Item1.BoundingBoxes.ToList(), 0.01f, predicationResult.Item2.Width, predicationResult.Item2.Height);
+        //    var imageBytes = await _drawingFancyService.DrawRectangles(file, predicationResult.Item1.BoundingBoxes.ToList(), 0.01f, predicationResult.Item2.Width, predicationResult.Item2.Height);
 
-            return File(imageBytes, "image/png");
-        }
+        //    return File(imageBytes, "image/png");
+        //}
     }
 }
