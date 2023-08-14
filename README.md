@@ -1,6 +1,10 @@
-**Solar image detection with ML.NET
-**
-- ML.NET
+# Solar Image Detection with ML.NET
+
+This project focuses on solar image detection using ML.NET.
+
+## Key Features
+- ML.NET integration
 - Manual labeling
-- Learning data: Solar powerplant coordinates (10000+) from the Global Powerplant database (https://datasets.wri.org/dataset/globalpowerplantdatabase)
-![letöltés (1)](https://github.com/czinegeroland/SolarImageDetectionWithONNXModel/assets/33530995/de4312a3-2d18-47ed-8581-01d19f140144)
+- Learning data: Solar powerplant coordinates (10,000+) sourced from the [Global Powerplant Database](https://datasets.wri.org/dataset/globalpowerplantdatabase)
+
+![Screenshot](https://github.com/czinegeroland/SolarImageDetectionWithONNXModel/assets/33530995/de4312a3-2d18-47ed-8581-01d19f140144)
