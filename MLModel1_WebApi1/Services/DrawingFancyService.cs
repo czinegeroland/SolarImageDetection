@@ -20,7 +20,7 @@ namespace MLModel1_WebApi1.Services
 
             using var inputImage = SixLabors.ImageSharp.Image.Load<Rgba64>(inputImageStream);
 
-            Bitmap outputImage = new Bitmap(inputImage.Width, inputImage.Height, PixelFormat.Format32bppArgb);
+            var outputImage = new Bitmap(inputImage.Width, inputImage.Height, PixelFormat.Format32bppArgb);
 
             var rectangles = new List<RectangleF>();
 
@@ -37,8 +37,6 @@ namespace MLModel1_WebApi1.Services
                 inputImage.Mutate(_ => _.Draw(pen, item));
                 inputImage.Mutate(_ => _.Fill(new SolidBrush(SixLabors.ImageSharp.Color.FromRgba(0, 255, 0, 24)), item));
             }
-
-
 
             var outputStream = new MemoryStream();
             inputImage.Save(outputStream, new PngEncoder());
@@ -59,9 +57,8 @@ namespace MLModel1_WebApi1.Services
 
         private List<RectangleF> NonMaximumSuppression(List<RectangleF> rectangles, float iouThreshold)
         {
-            List<RectangleF> outputRectangles = new List<RectangleF>();
+            var outputRectangles = new List<RectangleF>();
 
-            // Sort rectangles by area in descending order
             var sortedRectangles = rectangles.OrderByDescending(r => r.Width * r.Height).ToList();
 
             while (sortedRectangles.Count > 0)

@@ -34,7 +34,7 @@ namespace MLModel1_WebApi1.Controllers
             var predicationResult = await _predicationService.Predict(file);
             var imageBytes = await _drawingFancyService.DrawRectangles(file, predicationResult.Item1.BoundingBoxes.ToList(), 0.01f, predicationResult.Item2.Width, predicationResult.Item2.Height);
             
-            var imageUrl = $"data:image/png;base64,{System.Convert.ToBase64String(imageBytes)}";
+            var imageUrl = $"data:image/png;base64,{Convert.ToBase64String(imageBytes)}";
             
             ViewBag.ImageUrl = imageUrl;
            
