@@ -2,7 +2,7 @@
 
 This project focuses on solar image detection using ML.NET.
 
-## Key Features
+## Properties
 - ML.NET integration
 - Manual labeling
 - Learning data: Solar powerplant coordinates (10,000+) sourced from the [Global Powerplant Database](https://datasets.wri.org/dataset/globalpowerplantdatabase)
