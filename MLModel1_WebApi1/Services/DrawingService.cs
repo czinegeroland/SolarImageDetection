@@ -15,19 +15,17 @@ namespace MLModel1_WebApi1.Services
         {
             var inputImageStream = new MemoryStream();
             await file.CopyToAsync(inputImageStream);
-            
             inputImageStream.Position = 0;
             
-            Image inputImage = Image.FromStream(inputImageStream);
-            Bitmap outputImage = new Bitmap(inputImage.Width, inputImage.Height, PixelFormat.Format32bppArgb);
+            var inputImage = Image.FromStream(inputImageStream);
+            var outputImage = new Bitmap(inputImage.Width, inputImage.Height, PixelFormat.Format32bppArgb);
 
             var rectangles = new List<RectangleF>();
 
-            using (Graphics graphics = Graphics.FromImage(outputImage))
+            using (var graphics = Graphics.FromImage(outputImage))
             {
                 graphics.DrawImage(inputImage, 0, 0, inputImage.Width, inputImage.Height);
-
-                Pen pen = new Pen(Color.Red, 2);
+                var pen = new Pen(Color.Red, 2);
 
                 foreach (var box in boundingBoxes)
                 {
@@ -41,7 +39,7 @@ namespace MLModel1_WebApi1.Services
                 }
             }
 
-            using (MemoryStream outputStream = new MemoryStream())
+            using (var outputStream = new MemoryStream())
             {
                 outputImage.Save(outputStream, ImageFormat.Jpeg);
                 return outputStream.ToArray();
@@ -60,14 +58,13 @@ namespace MLModel1_WebApi1.Services
 
         private List<RectangleF> NonMaximumSuppression(List<RectangleF> rectangles, float iouThreshold)
         {
-            List<RectangleF> outputRectangles = new List<RectangleF>();
+            var outputRectangles = new List<RectangleF>();
 
-            // Sort rectangles by area in descending order
             var sortedRectangles = rectangles.OrderByDescending(r => r.Width * r.Height).ToList();
 
             while (sortedRectangles.Count > 0)
             {
-                RectangleF currentRect = sortedRectangles[0];
+                var currentRect = sortedRectangles[0];
                 outputRectangles.Add(currentRect);
                 sortedRectangles.RemoveAt(0);
 
